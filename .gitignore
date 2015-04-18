@@ -19,3 +19,16 @@
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# OS generated
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+[Tt]humbs.db
+
+# Potentially-large binary files. (Remove this if/when we start using Git's large file stuff)
+[Aa]ssets/[Ss]prites/
+[Aa]ssets/[Ss]prites.meta
