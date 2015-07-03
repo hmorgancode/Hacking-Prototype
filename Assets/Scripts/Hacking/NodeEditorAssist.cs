@@ -10,7 +10,7 @@ public class NodeEditorAssist : MonoBehaviour
 	void Update ()
   {
     //Disable during the first frame of Play Mode
-	  if(UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+	  if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
     {
 			this.enabled = false;
 		}
@@ -20,14 +20,17 @@ public class NodeEditorAssist : MonoBehaviour
 		}
 	}
 
-  //Called when we're moved. Snaps us to the pixel grid, etc...
+  //Called when we're changed.
   private void Refresh ()
   {
+    //Snap us to the pixel grid
     if (transform != null)
     {
       //transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y),transform.position.z);
       transform.SnapToPixelGrid();
     }
+
+    //If we're resized, this makes sure that our edges lie on pixel bounds.
     tk2dSlicedSprite sprite = GetComponent<tk2dSlicedSprite>();
     if (sprite != null) //This shouldn't be necessary with RequireComponent up top, but this (maybe) got rid of a harmless-seeming error
     {
@@ -35,6 +38,7 @@ public class NodeEditorAssist : MonoBehaviour
     }
     
     transform.hasChanged = false; //It got reset in the editor automatically when I wrote this, but that behavior was undocumented.
+    HelperMethods.Log(sprite.dimensions.x);
   }
   
   #endif
