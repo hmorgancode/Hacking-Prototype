@@ -1,13 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic; //List
 
+//Parent class for individual nodes in the Hacking layer.
 [RequireComponent(typeof(NodeEditorAssist))]
 public class Node : MonoBehaviour {
 
-  //Parent class for all individual nodes in the Hacking layer.
   //Keeps track of the width and height of the "canvas" (but is not a capital-C Unity Canvas)
+  //(sprite.dimensions.x and .y)
+  tk2dSlicedSprite sprite;
+
+  //"Ports" act as entrances and exits
+  [Range(1,5)]
+  public int numberOfPorts;
+  List<NodePort> ports;
+
   //Keeps a list of the AI units and structures
-  //Keeps track of entrances and exits
+
+  void Awake ()
+  {
+    sprite = GetComponent<tk2dSlicedSprite>();
+  }
 
 	// Use this for initialization
 	void Start ()

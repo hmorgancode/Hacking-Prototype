@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode, RequireComponent(typeof(tk2dSlicedSprite))]
+[ExecuteInEditMode, RequireComponent(typeof(Node)), RequireComponent(typeof(tk2dSlicedSprite))]
 public class NodeEditorAssist : MonoBehaviour
 {
   #if UNITY_EDITOR //None of this will be present when built.
@@ -24,21 +24,15 @@ public class NodeEditorAssist : MonoBehaviour
   private void Refresh ()
   {
     //Snap us to the pixel grid
-    if (transform != null)
-    {
-      //transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y),transform.position.z);
-      transform.SnapToPixelGrid();
-    }
+    transform.SnapToPixelGrid();
 
-    //If we're resized, this makes sure that our edges lie on pixel bounds.
     tk2dSlicedSprite sprite = GetComponent<tk2dSlicedSprite>();
-    if (sprite != null) //This shouldn't be necessary with RequireComponent up top, but this (maybe) got rid of a harmless-seeming error
-    {
-      sprite.dimensions = new Vector2(Mathf.Round(sprite.dimensions.x), Mathf.Round(sprite.dimensions.y));
-    }
-    
-    transform.hasChanged = false; //It got reset in the editor automatically when I wrote this, but that behavior was undocumented.
-    HelperMethods.Log(sprite.dimensions.x);
+    //In case we're resized, this makes sure that our edges lie on pixel bounds.
+    sprite.dimensions = new Vector2(Mathf.Round(sprite.dimensions.x), Mathf.Round(sprite.dimensions.y));
+    //Make sure that all of our ports remain on the edges of the 'canvas'
+
+    //It got reset in the editor automatically when I wrote this, but that behavior was undocumented.
+    transform.hasChanged = false;
   }
   
   #endif
