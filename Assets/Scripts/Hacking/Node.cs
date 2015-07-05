@@ -13,7 +13,7 @@ public class Node : MonoBehaviour {
   //"Ports" act as entrances and exits
   [Range(1,5)]
   public int numberOfPorts;
-  List<NodePort> ports;
+  public List<NodePort> ports;
 
   //Keeps a list of the AI units and structures
 

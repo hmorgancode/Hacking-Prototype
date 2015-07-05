@@ -1,27 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor; //PrefabUtility
 
-[ExecuteInEditMode, RequireComponent(typeof(Node)), RequireComponent(typeof(tk2dSlicedSprite))]
+[ExecuteInEditMode, RequireComponent(typeof(Node)),
+                    RequireComponent(typeof(tk2dSlicedSprite))]
 public class NodeEditorAssist : MonoBehaviour
 {
   #if UNITY_EDITOR //None of this will be present when built.
 
-	// Will be called whenever something changes in the scene (so, whenever you edit)
+  Node myNode;
+  int lastPortCount = 0; //Set the first time we edit the node's number of ports
+
+	// Will be called whenever something changes in the scene
 	void Update ()
   {
     //Disable during the first frame of Play Mode
 	  if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
     {
 			this.enabled = false;
+      return;
 		}
-    else if (transform != null && transform.hasChanged)
+    
+    //If our node was actually moved/scaled.
+    if (transform.hasChanged)
     {
-      Refresh();
+      AdaptSize();
+      //The Unity docs imply we need to do this manual reset. Works either way.
+      transform.hasChanged = false;
 		}
+
+    //Get our Node if we don't already have it.
+    if (myNode || (myNode = GetComponent<Node>()))
+    {
+      //If our port count has changed, add any new ports.
+      if (myNode.numberOfPorts != lastPortCount)
+      {
+        AdjustPortCount();
+      }
+    }
+
 	}
 
   //Called when we're changed.
-  private void Refresh ()
+  private void AdaptSize ()
   {
     //Snap us to the pixel grid
     transform.SnapToPixelGrid();
@@ -31,9 +52,30 @@ public class NodeEditorAssist : MonoBehaviour
     sprite.dimensions = new Vector2(Mathf.Round(sprite.dimensions.x), Mathf.Round(sprite.dimensions.y));
     //Make sure that all of our ports remain on the edges of the 'canvas'
 
-    //It got reset in the editor automatically when I wrote this, but that behavior was undocumented.
-    transform.hasChanged = false;
+  }
+
+  private void AdjustPortCount ()
+  {
+    //Either add or remove ports until we have as many as were set in the editor
+    if (lastPortCount < myNode.numberOfPorts)
+    {
+      for (int i = lastPortCount; i < myNode.numberOfPorts; ++i)
+      {
+        //We're guaranteed at least one port by the Node, which we use as our Prefab.
+        GameObject nodeObj = PrefabUtility.InstantiatePrefab(myNode.ports[0].gameObject) as GameObject;
+      }
+    }
+    else
+    {
+      for (int i = lastPortCount; i > myNode.numberOfPorts; --i)
+      {
+        Destroy(myNode.ports[i].gameObject);
+      }
+    }
+
+    //Update our port count
+    lastPortCount = myNode.numberOfPorts;
   }
   
-  #endif
+  #endif //UNITY_EDITOR
 }
