@@ -48,9 +48,10 @@ public class NodeEditorAssist : MonoBehaviour
     transform.SnapToPixelGrid();
 
     tk2dSlicedSprite sprite = GetComponent<tk2dSlicedSprite>();
-    //In case we're resized, this makes sure that our edges lie on pixel bounds.
+    // In case we're resized, this makes sure that our edges lie on pixel bounds.
+    // (This is a 2DToolkit sliced sprite, so it's measured in pixel units)
     sprite.dimensions = new Vector2(Mathf.Round(sprite.dimensions.x), Mathf.Round(sprite.dimensions.y));
-    //Make sure that all of our ports remain on the edges of the 'canvas'
+    // Make sure that all of our ports remain on the edges of the 'canvas'
 
   }
 
@@ -62,7 +63,7 @@ public class NodeEditorAssist : MonoBehaviour
       for (int i = lastPortCount; i < myNode.numberOfPorts; ++i)
       {
         //We're guaranteed at least one port by the Node, which we use as our Prefab.
-        GameObject nodeObj = PrefabUtility.InstantiatePrefab(myNode.ports[0].gameObject) as GameObject;
+        //GameObject nodeObj = PrefabUtility.InstantiatePrefab(myNode.ports[0].gameObject) as GameObject;
       }
     }
     else

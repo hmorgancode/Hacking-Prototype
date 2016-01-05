@@ -10,12 +10,11 @@ public class Node : MonoBehaviour {
   //(sprite.dimensions.x and .y)
   tk2dSlicedSprite sprite;
 
-  //"Ports" act as entrances and exits
-  [Range(1,5)]
+  //"Ports" act as entrances and exits (the range is for an easy slider, expand as necessary)
+  [Range(1,10)]
   public int numberOfPorts;
+  [HideInInspector]
   public List<NodePort> ports;
-
-  //Keeps a list of the AI units and structures
 
   void Awake ()
   {
