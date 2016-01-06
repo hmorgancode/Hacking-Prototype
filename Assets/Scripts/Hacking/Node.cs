@@ -24,12 +24,13 @@ public class Node : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
   {
-	  
+    // to irresponsibly get rid of lack-of-use warning
+    sprite.enabled = true;
 	}
 	
 	// Update is called once per frame
 	void Update ()
   {
-    
+
 	}
 }
